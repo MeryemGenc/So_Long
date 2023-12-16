@@ -1,68 +1,84 @@
-#include "ft_printf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mgencali <mgencali@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/26 17:02:52 by mgencali          #+#    #+#             */
+/*   Updated: 2023/05/26 17:02:53 by mgencali         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int ft_int(int a)
+#include"ft_printf.h"
+
+void	ft_putstr(char *neww, int *byte)
 {
-    char *res;
-    int chr;
+	int	i;
 
-    res = ft_itoa(a);
-    chr = ft_strlen(res);
-    ft_putstr_fd(res, 1);
-    free(res);
-    return (chr);
+	i = 0;
+	if (!neww)
+	{
+		ft_putstr("(null)", byte);
+		return ;
+	}
+	while (neww[i])
+		ft_putchar(neww[i++], byte);
 }
 
-int ft_hex(unsigned int a, char c)
+void	ft_putnumber(int x, int *byte)
 {
-    int ret;
-
-    ret = 0;
-    if (a >= 16)
-        ret += ft_hex(a / 16, c);
-    if (c == 'X')
-        write(1, &"0123456789ABCDEF"[a % 16], 1);
-    if (c == 'x')
-        write(1, &"0123456789abcdef"[a % 16], 1);
-    return (ret + 1);
+	if (x < 0)
+	{
+		if (x == -2147483648)
+		{
+			ft_putstr("-2147483648", byte);
+			return ;
+		}
+		ft_putchar('-', byte);
+		x = -x;
+	}
+	if (x >= 10)
+		ft_putnumber(x / 10, byte);
+	ft_putchar((x % 10) + 48, byte);
 }
 
-int ft_point(unsigned long a, int sign)
+void	ft_putunsigned(unsigned int x, int *byte)
 {
-    int ret;
-
-    ret = 0;
-    if (sign == 1)
-    {
-        ret += write(1, "0x", 2);
-        sign = 0;
-    }
-    if (a >= 16)
-        ret += ft_point(a / 16, 0);
-    write(1, &"0123456789abcdef"[a % 16], 1);
-    return (ret + 1);
+	if (x >= 10)
+		ft_putnumber(x / 10, byte);
+	ft_putchar((x % 10) + 48, byte);
 }
 
-int ft_string(char *str)
+void	ft_puthex(unsigned int n, int type, int *byte)
 {
-    int i;
+	char	*a;
 
-    i = -1;
-    if (!str)
-        return (write(1, "(null)", 6));
-    while (str[++i])
-        write(1, &str[i], 1);
-    return (i);
+	if (type == 'X')
+		a = ft_strdup("0123456789ABCDEF");
+	else
+		a = ft_strdup("0123456789abcdef");
+	if (n >= 16)
+	{
+		ft_puthex(n / 16, type, byte);
+		ft_puthex(n % 16, type, byte);
+	}
+	else
+		ft_putchar(a[n], byte);
+	free(a);
 }
 
-int ft_unsigned(unsigned int a)
+void	ft_putaddress(unsigned long long n, int *byte)
 {
-    int ret;
+	char	*a;
 
-    ret = 0;
-    if (a >= 10)
-    {
-        ret += ft_unsigned(a / 10);
-    }
-    write(1, &"0123456789"[a % 10], 1);
-    return (ret + 1);
+	a = ft_strdup("0123456789abcdef");
+	if (n >= 16)
+	{
+		ft_putaddress(n / 16, byte);
+		ft_putaddress(n % 16, byte);
+	}
+	else
+		ft_putchar(a[n], byte);
+	free(a);
 }

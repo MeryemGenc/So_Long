@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgencali <42istanbul.com.tr>               +#+  +:+       +#+        */
+/*   By: mgencali <mgencali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/27 14:05:40 by mgencali          #+#    #+#             */
-/*   Updated: 2022/10/27 14:06:20 by mgencali         ###   ########.tr       */
+/*   Created: 2023/05/26 17:02:26 by mgencali          #+#    #+#             */
+/*   Updated: 2023/06/07 14:39:59 by mgencali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,10 @@
 
 size_t	ft_strlen(const char *s)
 {
-	size_t	a;
+	size_t	i;
 
-	a = 0;
-	while (s[a])
-	{
-		a++;
-	}
-	return (a);
+	i = 0;
+	while (s[i] != 0)
+		i++;
+	return (i);
 }
-/*
-int main()
-{
-    char a[] = "hshjhkjhsaaaaa";
-    char b[3];
-
-    printf("%d",ft_strlen(a));
-    return 0;
-} */

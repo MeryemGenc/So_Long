@@ -1,53 +1,64 @@
-#include "ft_printf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mgencali <mgencali@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/26 17:02:55 by mgencali          #+#    #+#             */
+/*   Updated: 2023/05/26 17:02:56 by mgencali         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int ft_putchar(char a)
+#include"ft_printf.h"
+
+void	ft_putchar(int x, int *index)
 {
-    return (write(1, &a, 1));
+	(*index)++;
+	write(1, &x, 1);
 }
 
-int ft_format(va_list arg, char c)
+static void	type_convert(va_list va, char type, int *byte)
 {
-    if (c == 'u')
-        return (ft_unsigned(va_arg((arg), unsigned int)));
-    else if (c == 'c')
-        return (ft_putchar(va_arg((arg), int)));
-    else if (c == 'i' || c == 'd')
-        return (ft_int(va_arg((arg), int)));
-    else if (c == 'x' || c == 'X')
-        return (ft_hex(va_arg((arg), unsigned int), c));
-    else if (c == 'p')
-        return (ft_point(va_arg((arg), unsigned long), 1));
-    else if (c == 's')
-        return (ft_string(va_arg((arg), char *)));
-    else
-        return (ft_string("%"));
+	if (type == 'c')
+		ft_putchar(va_arg(va, int), byte);
+	else if (type == 's')
+		ft_putstr(va_arg(va, char *), byte);
+	else if (type == 'd' || type == 'i')
+		ft_putnumber(va_arg(va, int), byte);
+	else if (type == 'p')
+	{
+		ft_putstr("0x", byte);
+		ft_putaddress(va_arg(va, unsigned long long), byte);
+	}
+	if (type == 'u')
+		ft_putunsigned(va_arg(va, unsigned int), byte);
+	if (type == 'x' || type == 'X')
+		ft_puthex(va_arg(va, unsigned int), type, byte);
+	if (type == '%')
+		ft_putchar('%', byte);
 }
 
-bool ft_flag_catch(const char *str, int i)
+int	ft_printf(const char *new, ...)
 {
-    return (str[i] == '%' && (str[i + 1] == 'c' || str[i + 1] == 'd' || str[i + 1] == 'i' || str[i + 1] == 'u' || str[i + 1] == 'x' || str[i + 1] == 'X' || str[i + 1] == 'p' || str[i + 1] == 's' || str[i + 1] == '%'));
-}
+	int		index;
+	int		toplam_byte;
+	va_list	va;
 
-int ft_printf(const char *str, ...)
-{
-    va_list arg;
-    int i;
-    int rtn;
-
-    i = -1;
-    rtn = 0;
-    va_start(arg, str);
-    while (str[++i])
-    {
-        if (ft_flag_catch(str, i))
-            rtn += ft_format(arg, str[++i]);
-        else
-        {
-            if (str[i] == '%')
-                return (0);
-            rtn += write(1, &str[i], 1);
-        }
-    }
-    va_end(arg);
-    return (rtn);
+	va_start(va, new);
+	index = 0;
+	toplam_byte = 0;
+	while (new[index])
+	{
+		if (new[index] == '%')
+		{
+			index++;
+			type_convert(va, new[index], &toplam_byte);
+		}
+		else
+			ft_putchar(new[index], &toplam_byte);
+		index++;
+	}
+	va_end(va);
+	return (toplam_byte);
 }

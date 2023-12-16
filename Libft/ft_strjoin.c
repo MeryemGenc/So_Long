@@ -3,37 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgencali <42istanbul.com.tr>               +#+  +:+       +#+        */
+/*   By: mgencali <mgencali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/27 13:57:31 by mgencali          #+#    #+#             */
-/*   Updated: 2022/10/27 14:01:08 by mgencali         ###   ########.tr       */
+/*   Created: 2023/05/26 17:02:24 by mgencali          #+#    #+#             */
+/*   Updated: 2023/05/26 17:02:25 by mgencali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "stdlib.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*temp;
-	int		s2len;
-	int		s1len;
+	size_t	i;
+	char	*newstr;
 
-	s1len = ft_strlen(s1);
-	s2len = ft_strlen(s2);
-	temp = (char *)malloc(s1len + s2len + 1);
-	temp[0] = '\0';
-	ft_strlcat(temp, s1, s1len + 1);
-	ft_strlcat(temp + s1len, s2, s2len + 1);
-	return (temp);
+	if (!s1 || !s2)
+		return (NULL);
+	i = 0;
+	newstr = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!newstr)
+		return (0);
+	while (*s1)
+		newstr[i++] = *s1++;
+	while (*s2)
+		newstr[i++] = *s2++;
+	newstr[i] = '\0';
+	return (newstr);
 }
-/*
-int main()
-{
-    char a[] = "hello_people";
-    char b[] = "how are you?";
-    char *temp = ft_strjoin(a, b);
-    printf("%s", temp);
-    free(temp);
-    return 0;
-} */

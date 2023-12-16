@@ -1,17 +1,27 @@
-#ifndef FT_PRINTF_H
-#define FT_PRINTF_H
-#include <stdio.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include <stdarg.h>
-#include "../Libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mgencali <mgencali@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/26 17:02:59 by mgencali          #+#    #+#             */
+/*   Updated: 2023/05/26 17:03:00 by mgencali         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int ft_printf(const char *str, ...);
-int ft_format(va_list arg, char c);
-int ft_int(int a);
-int ft_hex(unsigned int a, char c);
-int ft_point(unsigned long a, int sign);
-int ft_string(char *str);
-int ft_unsigned(unsigned int a);
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
+# include "../libft/libft.h"
+# include <stdarg.h>
+
+void	ft_putchar(int x, int *index);
+void	ft_putstr(char *neww, int *byte);
+void	ft_putnumber(int x, int *byte);
+void	ft_putunsigned(unsigned int x, int *byte);
+void	ft_puthex(unsigned int n, int type, int *byte);
+void	ft_putaddress(unsigned long long n, int *byte);
+
+int		ft_printf(const	char *str, ...);
 
 #endif

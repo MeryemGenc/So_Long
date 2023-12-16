@@ -1,38 +1,50 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_control.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mgencali <mgencali@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/26 17:02:03 by mgencali          #+#    #+#             */
+/*   Updated: 2023/06/07 13:28:50 by mgencali         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 
-void ber_control(char *map_name) // map uzantı (.ber) kontrol
+void	ber_control(char *map_name)
 {
-    int len;
+	int	arg_len;
 
-    len = ft_strlen(map_name) - 1;
-    if (map_name[len] != 'r' || map_name[len - 1] != 'e' 
-        || map_name[len - 2] != 'b' || map_name[len - 3] != '.')
-        err_msg("ERROR: Map file is not '.ber'");
-    if (!map_name)
-        free(map_name);
+	arg_len = ft_strlen(map_name);
+	if (map_name[arg_len - 1] != 'r' || map_name[arg_len - 2] != 'e'
+		|| map_name[arg_len - 3] != 'b' || map_name[arg_len - 4] != '.')
+		err_msg("Error : Map file is not .ber");
+	if (!map_name)
+		free(map_name);
 }
 
-void tmp_control(char *map_name) // map dosya var mı? kontrol
+void	tmp_control(char *map_name)
 {
-    int fd;
+	int		fd;
 
-    fd = open(ft_strjoin("map/", map_name), O_RDONLY);
-    if (fd == -1)
-        err_msg("ERROR: File not found.");
-    close(fd);
-    if (!map_name)
-        free(map_name);
+	fd = open(ft_strjoin("map/", map_name), O_RDONLY);
+	if (fd == -1)
+		err_msg("Error : Map file is not found");
+	close(fd);
+	if (!map_name)
+		free(map_name);
 }
 
-void map_control(char **argv, t_data *data)
+void	map_control(char **argv, t_data *data)
 {
-    char *map_name;
-    char *map_path;
+	char	*map_name;
+	char	*map_names;
 
-    map_name = argv[1];
-    map_path = ft_strjoin("map/", map_name);
-    data->tmp_map = map_path;
-    free(map_path);
-    ber_control(argv[1]); // argv[1] yerine -> map name kullanabilir miyiz?
-    tmp_control(argv[1]); // argv[1] yerine -> map name kullanabilir miyiz?
+	map_name = argv[1];
+	map_names = ft_strjoin("map/", map_name);
+	data->map_tmp = map_names;
+	free(map_names);
+	ber_control(argv[1]);
+	tmp_control(argv[1]);
 }

@@ -1,24 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgencali <mgencali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/26 17:02:05 by mgencali          #+#    #+#             */
-/*   Updated: 2023/06/07 14:22:24 by mgencali         ###   ########.fr       */
+/*   Created: 2023/05/26 17:02:13 by mgencali          #+#    #+#             */
+/*   Updated: 2023/06/07 14:33:23 by mgencali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	main(int argc, char **argv)
+void	err_msg(char *msg)
 {
-	t_data	data;
+	ft_printf("%s", msg);
+	exit (0);
+}
 
-	if (argc != 2)
-		err_msg("Error : Argument 2 required");
-	map_control(argv, &data);
-	size_control(&data);
-	mlx_create(&data);
+int	mouse_hook(int mousecode, t_data *data)
+{
+	(void)mousecode;
+	(void)data;
+	err_msg("Exit Success");
+	return (0);
+}
+
+void	exit_door(t_data *data)
+{
+	if (data->coin_collected != data->coin_count)
+		return ;
+	ft_printf("\n>>>> Move Count: %d\n", data->step_count);
+	err_msg("FINISH");
 }
